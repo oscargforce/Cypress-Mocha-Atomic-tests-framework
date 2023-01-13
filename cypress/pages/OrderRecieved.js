@@ -4,7 +4,7 @@ class OrderRecieved {
   get getNavigationBarComponent() {
     return navigationBarComponent;
   }
-  get successPlacedOrderDivElement() {
+  get orderPlacedSuccessMessageElement() {
     return cy.get('.woocommerce-notice--success');
   }
 }

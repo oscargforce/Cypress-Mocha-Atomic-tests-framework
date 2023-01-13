@@ -19,13 +19,13 @@ describe('Basic Features', () => {
     checkoutPage.fillInCheckoutForm(checkoutData);
     checkoutPage.placeOrderBtnElement.click();
 
-    pages.getOrderRecievedPage.successPlacedOrderDivElement.should(
+    pages.getOrderRecievedPage.orderPlacedSuccessMessageElement.should(
       'have.text',
       'Thank you. Your order has been received.'
     );
   });
 
-  it('should say your cart is empty if no items are in the cart and ask to return to shop', () => {
+  it('should say your cart is empty if no items are in it and ask to return to the shop.', () => {
     const checkoutPage = pages.getCheckoutPage;
     cy.visit('/checkout');
 
@@ -33,5 +33,4 @@ describe('Basic Features', () => {
     checkoutPage.returnToShopBtnElement.should('contain.text', 'Return to shop').click();
     cy.url().should('include', '/store');
   });
-
 });

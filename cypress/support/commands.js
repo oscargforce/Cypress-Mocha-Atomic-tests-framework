@@ -24,30 +24,28 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 
-Cypress.Commands.add("loginThroughApi", ({ username, password }) => {
+Cypress.Commands.add('loginThroughApi', ({ username, password }) => {
   let cookies;
-  cy.request("GET", "/account/").then((response) => {
+  cy.request('GET', '/account/').then((response) => {
     let parser = new DOMParser();
-    const parsedHTML = parser.parseFromString(response.body, "text/html");
-    const targetElement = parsedHTML.querySelector("#woocommerce-login-nonce");
-    const value = targetElement.getAttribute("value");
+    const parsedHTML = parser.parseFromString(response.body, 'text/html');
+    const targetElement = parsedHTML.querySelector('#woocommerce-login-nonce');
+    const value = targetElement.getAttribute('value');
     cy.request({
-      method: "POST",
-      url: "/account/",
+      method: 'POST',
+      url: '/account/',
       headers: {
-        "content-type": "application/x-www-form-urlencoded",
+        'content-type': 'application/x-www-form-urlencoded',
       },
       body: {
         username: username,
         password: password,
-        "woocommerce-login-nonce": value,
-        login: "Log in",
-        _wp_http_referer: "/account/",
-        login: " Log in",
+        'woocommerce-login-nonce': value,
+        login: ' Log in',
       },
     }).then((response) => {
       const headerResponse = response.allRequestResponses;
-      cookies = headerResponse[0]["Response Headers"]["set-cookie"];
+      cookies = headerResponse[0]['Response Headers']['set-cookie'];
       cookies.forEach((cookie) => {
         cy.getCookie(cookie);
       });
@@ -56,20 +54,17 @@ Cypress.Commands.add("loginThroughApi", ({ username, password }) => {
   return cookies;
 });
 
-Cypress.Commands.add(
-  "addProductToCartThroughApi",
-  ({ cookies, productId, quantity }) => {
-    cy.request({
-      method: "POST",
-      url: "/?wc-ajax=add_to_cart",
-      headers: {
-        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
-        cookie: cookies,
-      },
-      body: {
-        product_id: productId,
-        quantity: quantity,
-      },
-    });
-  }
-);
+Cypress.Commands.add('addProductToCartThroughApi', ({ cookies, productId, quantity }) => {
+  cy.request({
+    method: 'POST',
+    url: '/?wc-ajax=add_to_cart',
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      cookie: cookies,
+    },
+    body: {
+      product_id: productId,
+      quantity: quantity,
+    },
+  });
+});
